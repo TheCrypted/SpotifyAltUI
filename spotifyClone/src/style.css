@@ -5,4 +5,49 @@
     .checkAlpha::-webkit-scrollbar{
         display: none;
     }
+    #playlistHighlightImage{
+        background-image: url("https://i.scdn.co/image/ab6761610000e5eb4111c95b5f430c3265c7304b");
+    }
+    #homeIcon{
+        background-image: url("https://icon-library.com/images/white-home-icon-png/white-home-icon-png-21.jpg");
+        background-size: 6%;
+        background-position: 2% 35%;
+    }
+    #searchIcon{
+        background-image: url("https://icon-library.com/images/search-icon-white-png/search-icon-white-png-18.jpg");
+        background-size: 6%;
+        background-position: 2.3%;
+    }
+    #settingsIcon{
+        background-image: url("https://www.nicepng.com/png/full/334-3349023_free-white-settings-icon-png-tool-icon-white.png");
+        background-size: 6%;
+        background-position: 2.3% 35%;
+    }
+    #libraryIcon{
+        background-image: url("https://www.kappaeng.com/images/icons/256/light/reading-room.png");
+        background-size: 7%;
+        background-position: 5% 45%;
+    }
+    #exampleImage{
+        background-image: url("https://upload.wikimedia.org/wikipedia/en/9/95/In_Tongues_Joji.png");
+    }
+    #exampleImage2{
+        background-image: url("https://wallpapers.com/images/hd/transformation-kaneki-pfp-c2bjg4jvjpf7c0o2.jpg");
+    }
+    .scrollBarRemove::-webkit-scrollbar{
+        display: none;
+    }
+    .hoverLighten:hover{
+        background-color: rgb(45, 40, 40);
+        cursor: pointer;
+        opacity: 1;
+    }
+    .hoverLighten, .hoverHighlight2{
+        transition: opacity 0.4s ease, background-color 0.4s ease;
+    }
+    .hoverHighlight2:hover{
+        background-color: rgba(75, 60, 60, 0.3);
+        cursor: pointer;
+    }
 }
+
