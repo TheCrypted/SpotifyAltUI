@@ -5,6 +5,7 @@ const APP_URL = import.meta.env.VITE_APP_URL
 
 const authorizeUser = ()=>{
     let url = import.meta.env.VITE_API_URL;
+    console.log(url)
     url += '?response_type=token';
     url += '&client_id=' + encodeURIComponent(clientID);
     url += '&scope=' + encodeURIComponent(scopes);
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 window.setItemsLocalStorage = ({access_token, token_type, expires_in})=>{
     localStorage.setItem("access_token", access_token)
     localStorage.setItem("token_type", token_type)
-    localStorage.setItem("expires_in", expires_in)
+    localStorage.setItem("expires_in", Date.now() + expires_in*1000)
     window.location.href = `${APP_URL}/dashboard/dashboard.html`
 }
 

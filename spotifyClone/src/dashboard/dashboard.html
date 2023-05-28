@@ -10,15 +10,26 @@
 <body class="bg-spBlack h-screen w-screen">
     <div class="grid grid-cols-8 grid-rows-1 h-[88%] w-screen">
         <div class="grid grid-cols-1 grid-rows-4 col-span-2 bg-black">
-            <div class="bg-spBlack rounded-xl row-span-1 m-2 grid font-semibold lg:text-xl xl:text-2xl text-white">
-                <div id="homeIcon" class="hoverLighten m-1  rounded-t-xl pl-11 pt-1 bg-no-repeat ">Home</div>
-                <div id="searchIcon" class="hoverLighten m-1 pl-11 pt-1 bg-no-repeat  opacity-40">Search</div>
-                <div id="settingsIcon" class="hoverLighten m-1  rounded-b-xl pl-11 pt-1 bg-no-repeat opacity-40">Settings</div>
+            <div class="bg-spBlack rounded-xl row-span-1 m-2 grid font-semibold lg:text-xl xl:text-2xl text-white grid-rows-3">
+                <div class="row-span-1 hoverLighten m-1  rounded-t-xl pl-2 bg-no-repeat flex items-center ">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg> <span class="pl-3">Home</span> </div>
+                <div  class="row-span-1 hoverLighten  pl-3 bg-no-repeat opacity-40 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-7 h-7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg> <span class=" pl-3">Search</span> </div>
+                <div  class="row-span-1 hoverLighten m-1  rounded-b-xl pl-2 pt-1 bg-no-repeat opacity-40 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg><span class="pl-3">Settings</span>
+                    </div>
             </div>
             <div class="bg-spBlack row-span-3 ml-2 mr-2 rounded-xl ">
-                <div class=" w-full h-1/5 rounded-t-xl grid grid-rows-3 grid-cols-4 pb-1">
+                <div class=" w-full h-1/5 rounded-t-xl grid grid-rows-3 grid-cols-4 pb-2">
                     <div id="libraryIcon" class="row-span-1 bg-no-repeat pb-1 col-span-3 opacity-40 hoverLighten lg:text-xl xl:text-2xl text-white font-semibold pl-11">Your Library</div>
-                    <div class="row-span-3 col-span-1 bg-hoverLighten text-white font-bold text-6xl flex justify-center items-center text-center pb-4 rounded-t-xl">←</div>
+                    <div class="row-span-3 col-span-1 bg-hoverLighten text-white font-bold text-6xl flex justify-center items-center text-center pb-4 rounded-l-xl  rounded-t-xl">←</div>
                     <div class="row-span-1 col-span-3 overflow-auto scrollBarRemove flex pt-1 gap-2">
                         <div class="w-auto h-full bg-superLightBlack flex-shrink-0 rounded-3xl text-white flex items-center p-3">Playlists</div>
                         <div class="w-auto h-full bg-superLightBlack flex-shrink-0 rounded-3xl text-white flex items-center p-3">Artists</div>
@@ -30,46 +41,30 @@
                     </div>
                     
                 </div>
-                <div class="overflow-y-auto scrollBarRemove w-full h-4/5 rounded-b-xl ">
-                    <div class=" w-full h-[14%] mb-1 hoverLighten scroll-smooth grid grid-rows-3 grid-cols-6">
-                        <div id="exampleImage" class="col-span-1 row-span-3 bg-contain bg-no-repeat rounded-lg"></div>
-                        <div class="col-span-5 row-span-1 flex items-start pl-3 pt-1 font-semibold text-lg text-white">Apollo Mk.IV</div>
-                        <div class="col-span-5 row-span-1  pl-3 pt-6 flex items-center font-semibold text-sm text-gray-500">Playlist ⋅ Aman Sharma</div>
-                    </div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth grid grid-rows-3 grid-cols-6 ">
-                        <div id="exampleImage2" class="col-span-1 row-span-3 bg-contain bg-no-repeat rounded-lg"></div>
-                        <div class="col-span-5 row-span-1 flex items-start pl-3 pt-1 font-semibold text-lg text-white">Apollo Mk.III</div>
-                        <div class="col-span-5 row-span-1  pl-3 pt-6 flex items-center font-semibold text-sm text-gray-500">Playlist ⋅ Arnav Sharma</div>
-                    
-                    </div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
-                    <div class="bg-spBlack w-full h-[14%] mb-1 hoverLighten scroll-smooth "></div>
+                <div id="playlistSidebar" class="overflow-y-auto scrollBarRemove w-full h-4/5 rounded-b-xl ">
+                    <!-- <div  class="w-full h-[14%] mb-2 hoverLighten scroll-smooth grid grid-rows-3 grid-cols-6">
+                        <div style="background-image: url(https://i.pinimg.com/originals/a0/7c/b8/a07cb8dca58085601dd4897053b9092a.jpg);" class="col-span-1 row-span-3 w-full bg-contain bg-no-repeat bg-center rounded-lg"></div>
+                        <div class="col-span-5 row-span-1 flex items-start pl-3 pt-1 font-semibold text-lg text-white"> Apollo Mk. IV</div>
+                        <div class="col-span-5 row-span-1  pl-3 pt-6 flex items-center font-semibold text-sm text-gray-500"> Playlist Aman Sharma </div>
+                    </div> -->
                 </div>
             </div>
         </div>
         <div class="grid grid-cols-1 grid-rows-2 col-span-6 bg-gradient-to-tl from-spBlack to-gray-900">
             <div class="bg-black rounded-2xl m-7 grid grid-cols-4 grid-rows-4 p-4">
                 <div id="playlistHighlightImage" class=" col-span-1 row-span-4 mr-2 rounded-l-2xl bg-contain flex items-end">
-                    <div class="h-1/5 w-full bg-black bg-opacity-30 backdrop-blur-2xl rounded-bl-2xl flex items-center justify-center text-center font-bold text-">APOLLO</div>
+                    <div id="textBoxPlaylistMain" class="h-1/5 w-full bg-black bg-opacity-30 backdrop-blur-2xl rounded-bl-2xl flex items-center justify-center text-center font-bold text-2xl">
+                        </div>
                 </div>
                 <div id="playlistHighlight" class="scrollBarRemove col-span-3 row-span-4 overflow-auto">
-                    <div class="bg-spBlack hoverLighten w-full h-1/5 rounded-r-xl"></div>
-                    <div class="bg-spBlack hoverLighten w-full h-1/5  mt-2 rounded-r-xl"></div>
-                    <div class="bg-spBlack hoverLighten w-full h-1/5  mt-2 rounded-r-xl"></div>
-                    <div class="bg-spBlack hoverLighten w-full h-1/5  mt-2 rounded-r-xl"></div>
-                    <div class="bg-spBlack hoverLighten w-full h-1/5  mt-2 rounded-r-xl"></div>
+                    
                 </div>
             </div>
             <div class="overflow-auto ml-7 mr-7 scrollBarRemove text-white text-3xl font-bold"> 
                 Recently played
                 <div class="w-full h-3/4 overflow-x-auto flex scrollBarRemove mt-5 mb-10 p-3 gap-5">
-                    <div class="bg-black bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-full flex-shrink-0 shadow-lg text-lg font-normal grid grid-cols-1 grid-rows-4">
+                    <div style="background-image: url('https://i.scdn.co/image/ab67616d0000b27353f6fa0d2589c6a7174f4b81');" class="bg-black  bg-contain bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-[99%] flex-shrink-0 ">
+                        <div class="w-full h-full bg-black bg-opacity-50 shadow-lg text-lg font-normal grid grid-cols-1 grid-rows-4 backdrop-blur-2xl rounded-2xl hoverHighlight2">
                         <div class="row-span-3">
                         <img src="https://i.scdn.co/image/ab67616d0000b27353f6fa0d2589c6a7174f4b81" alt="" class="w-[90%] top-3 left-[5%] rounded-xl shadow-xl relative">
                         </div>
@@ -77,26 +72,32 @@
                             Nectar
                         </div>
                     </div>
-                    <div class="bg-black bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-full flex-shrink-0 shadow-lg text-lg font-normal grid grid-cols-1 grid-rows-4">
+                    </div>
+                    <div style="background-image: url('https://i.scdn.co/image/ab67616d0000b27360ba1d6104d0475c7555a6b2');" class="bg-black  bg-contain bg-opacity-30 hoverHighlight2  rounded-2xl  w-1/6 h-[99%] flex-shrink-0 ">
+                        <div class="w-full h-full bg-blackTransparent shadow-lg text-lg font-normal grid grid-cols-1 grid-rows-4 backdrop-blur-xl rounded-2xl hoverHighlight2">
                         <div class="row-span-3">
-                            <img src="https://i.scdn.co/image/ab67616d0000b27360ba1d6104d0475c7555a6b2" alt="" class="w-[90%] top-3 left-[5%] rounded-xl shadow-xl relative">
-                            </div>
-                            <div class="flex items-center justify-center text-center text-xl font-semibold whitespace-nowrap overflow-hidden">
-                                Head in the Clouds
-                            </div> 
+                        <img src="https://i.scdn.co/image/ab67616d0000b27360ba1d6104d0475c7555a6b2" alt="" class="w-[90%] top-3 left-[5%] rounded-xl shadow-xl relative">
+                        </div>
+                        <div class="flex items-center justify-center text-center text-xl font-semibold text-ellipsis whitespace-nowrap overflow-hidden">
+                            Head in the Clouds
+                        </div>
+                    </div>
                     </div>
                 </div>
-                Made for Aman Sharma
-                <div class="w-full h-3/4 overflow-x-auto flex scrollBarRemove mt-5 mb-10 p-3 gap-5"> 
-                    <div class="bg-black bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-full flex-shrink-0 shadow-lg"></div>
-                    <div class="bg-black bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-full flex-shrink-0 shadow-lg"></div>
-                    <div class="bg-black bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-full flex-shrink-0 shadow-lg"></div>
-                    <div class="bg-black bg-opacity-30 hoverHighlight2 backdrop-blur-xl rounded-2xl  w-1/6 h-full flex-shrink-0 shadow-lg"></div>
+                Your top tracks
+                <div id="topItems" class="w-full h-3/4 overflow-x-auto flex scrollBarRemove mt-5 mb-10 p-3 gap-5"> 
+                </div>
+                Your top artists
+                <div id="topItems2" class="w-full h-3/4 overflow-x-auto flex scrollBarRemove mt-5 mb-10 p-3 gap-5"> 
+                </div>
+                Featured playlists
+                <div id="topItems3" class="w-full h-3/4 overflow-x-auto flex scrollBarRemove mt-5 mb-10 p-3 gap-5"> 
                 </div>
             </div>
             </div>
         </div>
     </div>
     <div class="bg-black h-[12%] w-screen"></div>
+    <script type="module" src="dashboard.js"></script>
 </body>
 </html>

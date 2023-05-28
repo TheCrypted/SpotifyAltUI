@@ -7,7 +7,8 @@ export default {
         "spGreen": "#1DB954",
         "spBlack": "#191414",
         "hoverLighten": "rgb(45, 40, 40)",
-        "superLightBlack": "rgb(60, 50, 50)"
+        "superLightBlack": "rgb(60, 50, 50)",
+        "blackTransparent": "rgb(0,0,0, 0.4)"
       }
     },
   },
