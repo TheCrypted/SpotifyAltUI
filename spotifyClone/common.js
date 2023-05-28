@@ -8,7 +8,13 @@ export const endpoints = {
     userTopTracks: "https://api.spotify.com/v1/me/top/tracks?time_range=long_term",
     userTopAlbums: "https://api.spotify.com/v1/me/shows?offset=0&limit=20",
     featuredPLaylists: "https://api.spotify.com/v1/browse/featured-playlists",
-    playlistItems: "https://api.spotify.com/v1/playlists/"
+    playlistItems: "https://api.spotify.com/v1/playlists/",
+    albumItems: "https://api.spotify.com/v1/albums/"
+}
+
+export const historyStates = {
+    DASHBOARD: "dashboard",
+    PLAYLIST: "playlist"
 }
 
 export function logout() {
