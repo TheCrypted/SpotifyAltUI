@@ -3,6 +3,13 @@ import { endpoints, historyStates } from "../../common";
 
 let mainPlaylistImage;
 let mainPlaylistName;
+let currentPlayingTitle = document.getElementById("currentPlayingTitle");
+let currentPlayingImg = document.getElementById("currentPlayingImg");
+let currentPlayingArtist = document.getElementById("currentPlayingArtist");
+let currentStart = document.getElementById("currentStart");
+let currentEnd = document.getElementById("currentEnd");
+let volumeSlider = document.getElementById("volumeSlider");
+let audio = new Audio();
 
 async function getPlaylists(){
     let playlistSidebar = document.getElementById("playlistSidebar");
@@ -95,6 +102,17 @@ function clickPlaylist(newPlayListID, mainPlaylistImage, mainPlaylistName, endpo
     history.pushState(section, "", ``)//http://localhost:3000/dashboard/Playlist/${newPlayListID}
 }
 
+function onAudioMetaData(){
+    currentEnd.textContent = timeDisplay(audio.duration*1000)
+    audio.play()
+}
+
+function clickSong(previewURL){
+    audio.src = previewURL
+    audio.remove("loadedmetadata", onAudioMetaData)
+    audio.addEventListener("loadedmetadata", onAudioMetaData)
+}
+
 async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistName, endpoint){
     let playlistHighlight = document.getElementById("playlistHighlight")
     let playlistHighlightImage = document.getElementById("playlistHighlightImage")
@@ -122,7 +140,6 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
         albumName = base.album.name.slice(0, 25) === base.album.name ? base.album.name : base.album.name.slice(0, 25) + "..";
         url = base.album.images[0].url;
         }
-        
         let Artistname = base.artists[0].name;
         let time = base.duration_ms;
         track.classList.add("bg-spBlack", "hoverLighten", "w-full", "h-1/5", "rounded-r-xl", "grid", "grid-cols-12", "mb-2")
@@ -137,18 +154,25 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
             "                        </div>\n" +
             "                        <div class=\"col-span-5  flex items-center hover:underline text-gray-500  lg:text-sm xl:text-lg\">" + albumName + "</div>\n" +
             "                        <div class=\"col-span-1 flex items-center text-gray-500 font-semibold lg:text-sm xl:text-lg\">" + timeDisplay(time) + "</div>"
-            
-            let trackSpec = track.querySelector("svg")
+        let bg = url
+        track.addEventListener("mouseup", function(){
+            currentPlayingImg.style.backgroundImage = "url('" + bg + "')";
+            currentPlayingArtist.textContent = Artistname
+            currentPlayingTitle.textContent = base.name;
+            if(base.preview_url){
+            clickSong(base.preview_url)}
+        })
+        let trackSpec = track.querySelector("svg")
+        trackSpec.style.opacity = "0"
+        track.addEventListener("mousemove", () => {
+            trackSpec.style.opacity = "1"
+        })
+        track.addEventListener("mouseout", () => {
             trackSpec.style.opacity = "0"
-            track.addEventListener("mousemove", () => {
-                trackSpec.style.opacity = "1"
-            })
-            track.addEventListener("mouseout", () => {
-                trackSpec.style.opacity = "0"
-            });
-            playlistHighlight.appendChild(track)
-            i++
-        }
+        });
+        playlistHighlight.appendChild(track)
+        i++
+    }
 }
 
 function timeDisplay(duration_ms){
