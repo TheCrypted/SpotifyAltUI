@@ -91,6 +91,8 @@ function clickPlaylist(newPlayListID, mainPlaylistImage, mainPlaylistName, endpo
     let playlistHighlight = document.getElementById("playlistHighlight")
     playlistHighlight.innerHTML = "";
     loadMainPlaylist(newPlayListID, mainPlaylistImage, mainPlaylistName, endpoint)
+    const section = [newPlayListID, mainPlaylistImage, mainPlaylistName, endpoint]
+    history.pushState(section, "", ``)//http://localhost:3000/dashboard/Playlist/${newPlayListID}
 }
 
 async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistName, endpoint){
@@ -111,6 +113,7 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
     }
     playlistHighlightImage.style.backgroundImage = "url(" + mainPlaylistImage + ")"
     textBox.textContent = mainPlaylistName.slice(0, 20) === mainPlaylistName ? mainPlaylistName : mainPlaylistName.slice(0, 20) + "..";
+    let i = 0;
     for(let item of iterable){
         let track = document.createElement("div")
         let base = !album ? item.track : item;
@@ -123,15 +126,28 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
         let Artistname = base.artists[0].name;
         let time = base.duration_ms;
         track.classList.add("bg-spBlack", "hoverLighten", "w-full", "h-1/5", "rounded-r-xl", "grid", "grid-cols-12", "mb-2")
-        track.innerHTML = "<div style=\"background-image: url('" + url + "');\" class=\"col-span-1 bg-cover bg-no-repeat rounded-r-xl bg-center bg-spBlack\"></div>\n" +
+        track.innerHTML = "<div style=\"background-image: url('" + url + "');\" class=\"col-span-1 bg-cover bg-no-repeat rounded-r-xl bg-center bg-spBlack flex items-center justify-center\">" +
+            "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#1DB954\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-8 h-8\">\n" +
+            "  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z\" />\n" +
+            "</svg>\n" +
+            "</div>\n" +
             "                        <div class=\"col-span-5 pl-5 flex-col items-center text-white font-semibold lg:text-lg xl:text-xl\">\n" +
             "                            <div>" + name + "</div>\n" +
             "                            <div class=\"items-center text-gray-500 hover:underline lg:text-sm xl:text-base\">" + Artistname + "</div>\n" +
             "                        </div>\n" +
             "                        <div class=\"col-span-5  flex items-center hover:underline text-gray-500  lg:text-sm xl:text-lg\">" + albumName + "</div>\n" +
             "                        <div class=\"col-span-1 flex items-center text-gray-500 font-semibold lg:text-sm xl:text-lg\">" + timeDisplay(time) + "</div>"
-
+            
+            let trackSpec = track.querySelector("svg")
+            trackSpec.style.opacity = "0"
+            track.addEventListener("mousemove", () => {
+                trackSpec.style.opacity = "1"
+            })
+            track.addEventListener("mouseout", () => {
+                trackSpec.style.opacity = "0"
+            });
             playlistHighlight.appendChild(track)
+            i++
         }
 }
 
@@ -146,4 +162,14 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     let playlistMainID = await getPlaylists()
     getTopItems()
     loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistName, endpoints.playlistItems)
+    const section = [playlistMainID, mainPlaylistImage, mainPlaylistName, endpoints.playlistItems]
+    history.pushState(section, "", "")
+    window.addEventListener("popstate", (event)=>{
+        playlistHighlight.innerHTML = ""; 
+        loadMainPlaylist(event.state[0], event.state[1], event.state[2], event.state[3])
+    })
+    window.addEventListener('unload', function(event) {
+        console.log(import.meta.env.VITE_APP_URL);
+        this.document.location.href = import.meta.env.VITE_APP_URL
+      });
 })
