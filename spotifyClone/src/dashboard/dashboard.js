@@ -3,6 +3,18 @@ import { endpoints, historyStates } from "../../common";
 
 let mainPlaylistImage;
 let mainPlaylistName;
+let currentPlayingTitle = document.getElementById("currentPlayingTitle");
+let currentPlayingImg = document.getElementById("currentPlayingImg");
+let currentPlayingArtist = document.getElementById("currentPlayingArtist");
+let currentStart = document.getElementById("currentStart");
+let currentEnd = document.getElementById("currentEnd");
+let volumeSlider = document.getElementById("volumeSlider");
+let progressBar = document.getElementById("progressBar");
+let playPause = document.getElementById("playPause");
+let mute = document.getElementById("mute");
+let muted = false;
+let progressInterval;
+let audio = new Audio();
 
 async function getPlaylists(){
     let playlistSidebar = document.getElementById("playlistSidebar");
@@ -95,6 +107,25 @@ function clickPlaylist(newPlayListID, mainPlaylistImage, mainPlaylistName, endpo
     history.pushState(section, "", ``)//http://localhost:3000/dashboard/Playlist/${newPlayListID}
 }
 
+function onAudioMetaData(){
+    currentEnd.textContent = timeDisplay(audio.duration*1000)
+    clearInterval(progressInterval)
+    progressInterval = setInterval(()=>{
+        if(audio.paused) return;
+        currentStart.textContent = timeDisplay(audio.currentTime*1000)
+        progressBar.style.backgroundImage = "linear-gradient( to right, white " + audio.currentTime/audio.duration *100 + "%, rgb(50, 50, 50) " + audio.currentTime/audio.duration *100 + "%)"
+        
+    }, 100)
+    audio.play()
+}
+
+function clickSong(previewURL){
+    audio.src = previewURL
+    audio.remove("loadedmetadata", onAudioMetaData)
+    audio.addEventListener("loadedmetadata", onAudioMetaData)
+    playPause.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />"
+}
+
 async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistName, endpoint){
     let playlistHighlight = document.getElementById("playlistHighlight")
     let playlistHighlightImage = document.getElementById("playlistHighlightImage")
@@ -122,10 +153,9 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
         albumName = base.album.name.slice(0, 25) === base.album.name ? base.album.name : base.album.name.slice(0, 25) + "..";
         url = base.album.images[0].url;
         }
-        
         let Artistname = base.artists[0].name;
         let time = base.duration_ms;
-        track.classList.add("bg-spBlack", "hoverLighten", "w-full", "h-1/5", "rounded-r-xl", "grid", "grid-cols-12", "mb-2")
+        track.classList.add("bg-spBlack", "w-full", "h-1/5", "rounded-r-xl", "grid", "grid-cols-12", "mb-2")
         track.innerHTML = "<div style=\"background-image: url('" + url + "');\" class=\"col-span-1 bg-cover bg-no-repeat rounded-r-xl bg-center bg-spBlack flex items-center justify-center\">" +
             "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#1DB954\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-8 h-8\">\n" +
             "  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z\" />\n" +
@@ -137,18 +167,27 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
             "                        </div>\n" +
             "                        <div class=\"col-span-5  flex items-center hover:underline text-gray-500  lg:text-sm xl:text-lg\">" + albumName + "</div>\n" +
             "                        <div class=\"col-span-1 flex items-center text-gray-500 font-semibold lg:text-sm xl:text-lg\">" + timeDisplay(time) + "</div>"
-            
-            let trackSpec = track.querySelector("svg")
+        let bg = url
+        track.addEventListener("mouseup", function(){
+            currentPlayingImg.style.backgroundImage = "url('" + bg + "')";
+            currentPlayingArtist.textContent = Artistname
+            currentPlayingTitle.textContent = base.name;
+            if(base.preview_url){
+            track.classList.add("bg-spGreen")
+            trackSpec.style.opacity = "1"
+            clickSong(base.preview_url)}
+        })
+        let trackSpec = track.querySelector("svg")
+        trackSpec.style.opacity = "0"
+        track.addEventListener("mousemove", () => {
+            trackSpec.style.opacity = "1"
+        })
+        track.addEventListener("mouseout", () => {
             trackSpec.style.opacity = "0"
-            track.addEventListener("mousemove", () => {
-                trackSpec.style.opacity = "1"
-            })
-            track.addEventListener("mouseout", () => {
-                trackSpec.style.opacity = "0"
-            });
-            playlistHighlight.appendChild(track)
-            i++
-        }
+        });
+        playlistHighlight.appendChild(track)
+        i++
+    }
 }
 
 function timeDisplay(duration_ms){
@@ -172,4 +211,36 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         console.log(import.meta.env.VITE_APP_URL);
         this.document.location.href = import.meta.env.VITE_APP_URL
       });
+    playPause.addEventListener("mouseup", ()=>{
+        playPause.style.fill="#1DB954"
+        if(audio.paused){
+            audio.play()
+            playPause.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />"
+        } else {
+            audio.pause()
+            playPause.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />\n" +
+                "                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z\" />\n"
+            
+        }
+        setTimeout(function() {
+            playPause.style.fill="white"
+        }, 100)
+    })
+    volumeSlider.addEventListener("change", function(){
+        audio.volume = volumeSlider.value/100
+    })
+    mute.addEventListener("mouseup", function(){
+        if(!muted){
+        audio.volume = 0
+        volumeSlider.value = 0;
+        mute.innerHTML =
+            "  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.531V19.94a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.506-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.395C2.806 8.757 3.63 8.25 4.51 8.25H6.75z\" />\n"
+        muted = true;
+        } else {
+            audio.volume = 1
+            volumeSlider.value = 100;
+            mute.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z\" />\n"
+            muted = false;
+        }
+    })
 })
