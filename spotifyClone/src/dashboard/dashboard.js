@@ -12,6 +12,11 @@ let volumeSlider = document.getElementById("volumeSlider");
 let progressBar = document.getElementById("progressBar");
 let playPause = document.getElementById("playPause");
 let mute = document.getElementById("mute");
+let playingTrack;
+let playingWidget;
+let nextTrack;
+let currentSongIndex;
+let playingUrl;
 let muted = false;
 let progressInterval;
 let audio = new Audio();
@@ -114,7 +119,11 @@ function onAudioMetaData(){
         if(audio.paused) return;
         currentStart.textContent = timeDisplay(audio.currentTime*1000)
         progressBar.style.backgroundImage = "linear-gradient( to right, white " + audio.currentTime/audio.duration *100 + "%, rgb(50, 50, 50) " + audio.currentTime/audio.duration *100 + "%)"
-        
+
+        if(audio.currentTime/audio.duration *100 > 99.4){
+            onSongEnd();
+            return;
+        }
     }, 100)
     audio.play()
 }
@@ -124,6 +133,50 @@ function clickSong(previewURL){
     audio.remove("loadedmetadata", onAudioMetaData)
     audio.addEventListener("loadedmetadata", onAudioMetaData)
     playPause.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />"
+}
+
+const onSongEnd = () => {
+    playPause.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />\n" +
+                "                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z\" />\n"
+                
+    console.log(currentSongIndex);
+    let base = document.getElementById("container" + (currentSongIndex+1))
+    let input = [base, nextTrack]
+    playTrack(input)
+    console.log("Song has ended!");
+}
+
+const playTrack = (inputs)=>{
+    let track = inputs[0]
+    let base = inputs[1]
+    let bg;
+    if(inputs.length ===3){
+        bg = inputs[2]
+    } else {
+        bg = base.album.images[0].url;
+    }
+    let trackSpec = track.querySelector("svg")
+    let Artistname = base.artists[0].name;
+    currentPlayingImg.style.backgroundImage = "url('" + bg + "')";
+    currentPlayingArtist.textContent = Artistname
+    currentPlayingTitle.textContent = base.name;
+    if(base.preview_url){
+        let bgImg = document.getElementById(base.name)
+        if(playingTrack){
+            playingTrack.style.backgroundColor = "#191414";
+            playingWidget.style.backgroundImage = "url('" + playingUrl + "')";
+            playingWidget.style.backgroundSize = "cover";
+        }
+        track.style.backgroundColor = "rgba(55, 50, 50)"
+        bgImg.style.backgroundImage = "url('music.gif')";
+        bgImg.style.backgroundSize = "50%";
+        playingUrl = bg
+        playingTrack = track;
+        playingWidget = bgImg
+    // track.classList.add("bg-spGreen")
+    trackSpec.style.opacity = "1"
+    clickSong(base.preview_url)
+}
 }
 
 async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistName, endpoint){
@@ -155,8 +208,9 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
         }
         let Artistname = base.artists[0].name;
         let time = base.duration_ms;
+        track.id = "container" + i;
         track.classList.add("bg-spBlack", "w-full", "h-1/5", "rounded-r-xl", "grid", "grid-cols-12", "mb-2")
-        track.innerHTML = "<div style=\"background-image: url('" + url + "');\" class=\"col-span-1 bg-cover bg-no-repeat rounded-r-xl bg-center bg-spBlack flex items-center justify-center\">" +
+        track.innerHTML = "<div id=\"" + base.name + "\" style=\"background-image: url('" + url + "');\" class=\"col-span-1 bg-cover bg-no-repeat rounded-r-xl bg-center bg-spBlack flex items-center justify-center\">" +
             "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"#1DB954\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" class=\"w-8 h-8\">\n" +
             "  <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z\" />\n" +
             "</svg>\n" +
@@ -168,16 +222,25 @@ async function loadMainPlaylist(playlistMainID, mainPlaylistImage, mainPlaylistN
             "                        <div class=\"col-span-5  flex items-center hover:underline text-gray-500  lg:text-sm xl:text-lg\">" + albumName + "</div>\n" +
             "                        <div class=\"col-span-1 flex items-center text-gray-500 font-semibold lg:text-sm xl:text-lg\">" + timeDisplay(time) + "</div>"
         let bg = url
-        track.addEventListener("mouseup", function(){
-            currentPlayingImg.style.backgroundImage = "url('" + bg + "')";
-            currentPlayingArtist.textContent = Artistname
-            currentPlayingTitle.textContent = base.name;
-            if(base.preview_url){
-            track.classList.add("bg-spGreen")
-            trackSpec.style.opacity = "1"
-            clickSong(base.preview_url)}
-        })
+        let index = i
         let trackSpec = track.querySelector("svg")
+        track.addEventListener("mouseup", function(){
+            if(iterable[index+1]!== undefined){
+                nextTrack = !album ? iterable[index+1].track : iterable[index+1]
+            } else {
+                while(iterable[index+1]!== undefined){
+                    index++;
+                }
+            }
+            currentSongIndex = index;
+            if(album){
+                let input = [track, base, bg]
+                playTrack(input);
+            } else {
+                let input = [track, base]
+                playTrack(input);
+            }
+        })
         trackSpec.style.opacity = "0"
         track.addEventListener("mousemove", () => {
             trackSpec.style.opacity = "1"
@@ -210,7 +273,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     window.addEventListener('unload', function(event) {
         console.log(import.meta.env.VITE_APP_URL);
         this.document.location.href = import.meta.env.VITE_APP_URL
-      });
+    });
     playPause.addEventListener("mouseup", ()=>{
         playPause.style.fill="#1DB954"
         if(audio.paused){
@@ -220,7 +283,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
             audio.pause()
             playPause.innerHTML = "<path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />\n" +
                 "                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z\" />\n"
-            
         }
         setTimeout(function() {
             playPause.style.fill="white"
